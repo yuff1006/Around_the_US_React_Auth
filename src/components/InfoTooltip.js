@@ -1,9 +1,20 @@
 import successImage from "../images/success.svg";
 import failImage from "../images/fail.svg";
 
-function InfoTooltip({ name, isOpen, success }) {
+function InfoTooltip({ name, isOpen, success, onClose }) {
+  function handleOverLayClose(evt) {
+    if (
+      evt.target.classList.contains("popup") ||
+      evt.target.classList.contains("popup__close")
+    ) {
+      onClose();
+    }
+  }
   return (
-    <div className={`popup popup_type_${name} ${isOpen ? "popup_open" : ""}`}>
+    <div
+      className={`popup popup_type_${name} ${isOpen ? "popup_open" : ""}`}
+      onClick={handleOverLayClose}
+    >
       <div className="popup__container">
         <img
           src={success ? successImage : failImage}

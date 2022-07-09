@@ -18,7 +18,7 @@ import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
   const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = useState(true);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -74,6 +74,7 @@ function App() {
     setPicturePopupOpen(false);
     setDeleteCardConfirmationPopupOpen(false);
     setSelectedCard({});
+    setIsInfoToolTipPopupOpen(false);
   }
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -191,7 +192,7 @@ function App() {
           <ProtectedRoute path={"/main"} isLoggedIn={isLoggedIn}>
             <Route path="/main">
               <CurrentUserContext.Provider value={currentUser}>
-                <Header />
+                <Header isLoggedIn={isLoggedIn} />
                 <CardsContext.Provider value={cards}>
                   <Main
                     onEditProfileClick={handleEditProfileClick}
@@ -239,16 +240,18 @@ function App() {
             </Route>
           </ProtectedRoute>
           <Route path="/signin">
-            <Header />
+            {isLoggedIn && <Redirect to="/main" />}
+            <Header isLoggedIn={isLoggedIn} onPage="login" />
             <Login />
           </Route>
           <Route path="/signup">
-            <Header />
+            <Header isLoggedIn={isLoggedIn} onPage="signup" />
             <Register />
             <InfoTooltip
               name="infotooltip"
               isOpen={isInfoToolTipPopupOpen}
               success={isRegistrationSuccess}
+              onClose={closeAllPopups}
             />
           </Route>
           <Route path="/">
