@@ -3,7 +3,7 @@ function Login() {
     <main className="auth">
       <div className="auth__container">
         <h1 className="auth__heading">Log in</h1>
-        <form className="auth__form">
+        <form className="auth__form" name="signin-form">
           <input
             className="auth__input"
             placeholder="Email"

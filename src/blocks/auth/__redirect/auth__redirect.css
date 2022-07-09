@@ -4,3 +4,9 @@
   padding: 0;
   margin: 0;
 }
+
+@media screen and (max-width: 420px) {
+  .auth__redirect {
+    font-size: 12px;
+  }
+}

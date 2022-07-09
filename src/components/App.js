@@ -240,11 +240,11 @@ function App() {
             <Header />
             <Login />
           </Route>
-          {/* <Route path="/signup">
+          <Route path="/signup">
             <Header />
             <Register />
-            <InfoTooltip />
-          </Route> */}
+            {/* <InfoTooltip /> */}
+          </Route>
           <Route path="/">
             {isLoggedIn ? <Redirect to="/main" /> : <Redirect to="/signin" />}
           </Route>

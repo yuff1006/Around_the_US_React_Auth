@@ -17,3 +17,10 @@
 .auth__button:hover {
   opacity: 0.85;
 }
+
+@media screen and (max-width: 420px) {
+  .auth__button {
+    font-size: 16px;
+    padding: 14px 100px;
+  }
+}
