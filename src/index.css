@@ -14,9 +14,11 @@
 @import url("./blocks/footer/footer.css");
 /* popup blocks */
 @import url("./blocks/popup/popup.css");
+/* auth blocks */
+@import url("./blocks/auth/auth.css");
+
 /* header elements */
 @import url("./blocks/header/__logo/header__logo.css");
-
 /* profile elements */
 @import url("./blocks/profile/__name/profile__name.css");
 @import url("./blocks/profile/__title/profile__title.css");
@@ -48,6 +50,13 @@
 @import url("./blocks/popup/__picture/popup__picture.css");
 @import url("./blocks/popup/__popup-caption/popup__popup-caption.css");
 @import url("./blocks/popup/__error/popup__error.css");
+/* auth elements */
+@import url("./blocks/auth/__container/auth__container.css");
+@import url("./blocks/auth/__heading/auth__heading.css");
+@import url("./blocks/auth/__form/auth__form.css");
+@import url("./blocks/auth/__input/auth__input.css");
+@import url("./blocks/auth/__button/auth__button.css");
+@import url("./blocks/auth/__redirect/auth__redirect.css");
 /* popup modifier */
 @import url("./blocks/popup/_open/popup_open.css");
 @import url("./blocks/card/__heart/_active/card__heart_active.css");

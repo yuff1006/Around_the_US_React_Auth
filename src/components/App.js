@@ -11,12 +11,14 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { CardsContext } from "../contexts/CardsContext";
 import { DeletedCardContext } from "../contexts/DeletedCardContext";
-import { Switch, Router, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -183,52 +185,70 @@ function App() {
   return (
     <div className="App">
       <div className="page">
-        <CurrentUserContext.Provider value={currentUser}>
-          <Header />
-          <CardsContext.Provider value={cards}>
-            <Main
-              onEditProfileClick={handleEditProfileClick}
-              onAddPlaceClick={handleAddPlaceClick}
-              onEditAvatarClick={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleLikeClick}
-              onCardDelete={handleConfirmation}
-            />
-          </CardsContext.Provider>
-          <Footer />
-          <ImagePopup
-            name="picture"
-            card={selectedCard}
-            onClose={closeAllPopups}
-            isOpen={isPicturePopupOpen}
-          />
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-            buttonState={isButtonStateLoading}
-          />
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-            buttonState={isButtonStateLoading}
-          />
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddPlaceSubmit={handleAddPlaceSubmit}
-            buttonState={isButtonStateLoading}
-          />
-          <DeletedCardContext.Provider value={deletedCard}>
-            <DeleteCardConfirmationPopup
-              isOpen={isDeleteCardConfirmationPopupOpen}
-              onClose={closeAllPopups}
-              onConfirmation={handleCardDelete}
-              buttonState={isButtonStateLoading}
-            />
-          </DeletedCardContext.Provider>
-        </CurrentUserContext.Provider>
+        <Switch>
+          {/* <ProtectedRoute path="/main"> */}
+          <Route path="/main">
+            <CurrentUserContext.Provider value={currentUser}>
+              <Header />
+              <CardsContext.Provider value={cards}>
+                <Main
+                  onEditProfileClick={handleEditProfileClick}
+                  onAddPlaceClick={handleAddPlaceClick}
+                  onEditAvatarClick={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleLikeClick}
+                  onCardDelete={handleConfirmation}
+                />
+              </CardsContext.Provider>
+              <Footer />
+              <ImagePopup
+                name="picture"
+                card={selectedCard}
+                onClose={closeAllPopups}
+                isOpen={isPicturePopupOpen}
+              />
+              <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+                onUpdateAvatar={handleUpdateAvatar}
+                buttonState={isButtonStateLoading}
+              />
+              <EditProfilePopup
+                isOpen={isEditProfilePopupOpen}
+                onClose={closeAllPopups}
+                onUpdateUser={handleUpdateUser}
+                buttonState={isButtonStateLoading}
+              />
+              <AddPlacePopup
+                isOpen={isAddPlacePopupOpen}
+                onClose={closeAllPopups}
+                onAddPlaceSubmit={handleAddPlaceSubmit}
+                buttonState={isButtonStateLoading}
+              />
+              <DeletedCardContext.Provider value={deletedCard}>
+                <DeleteCardConfirmationPopup
+                  isOpen={isDeleteCardConfirmationPopupOpen}
+                  onClose={closeAllPopups}
+                  onConfirmation={handleCardDelete}
+                  buttonState={isButtonStateLoading}
+                />
+              </DeletedCardContext.Provider>
+            </CurrentUserContext.Provider>
+          </Route>
+          {/* </ProtectedRoute> */}
+          <Route path="/signin">
+            <Header />
+            <Login />
+          </Route>
+          {/* <Route path="/signup">
+            <Header />
+            <Register />
+            <InfoTooltip />
+          </Route> */}
+          <Route path="/">
+            {isLoggedIn ? <Redirect to="/main" /> : <Redirect to="/signin" />}
+          </Route>
+        </Switch>
       </div>
     </div>
   );
