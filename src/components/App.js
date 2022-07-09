@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -19,6 +19,8 @@ import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
+  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = useState(true);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -243,7 +245,11 @@ function App() {
           <Route path="/signup">
             <Header />
             <Register />
-            {/* <InfoTooltip /> */}
+            <InfoTooltip
+              name="infotooltip"
+              isOpen={isInfoToolTipPopupOpen}
+              success={isRegistrationSuccess}
+            />
           </Route>
           <Route path="/">
             {isLoggedIn ? <Redirect to="/main" /> : <Redirect to="/signin" />}
