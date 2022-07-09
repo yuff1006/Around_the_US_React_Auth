@@ -16,10 +16,13 @@ function Header({ isLoggedIn, onPage }) {
         className="header__logo"
         src={headerLogo}
       />
-      {isLoggedIn && <p className="header__account">email@email.com</p>}
-      <button type="button" className="header__button">
-        {buttonContent}
-      </button>
+      <div className="header__credential-container">
+        {isLoggedIn && <p className="header__account">email@email.com</p>}
+        <button type="button" className="header__button">
+          {buttonContent}
+        </button>
+      </div>
+      {/* task: figure out hamburger menu  */}
     </header>
   );
 }
