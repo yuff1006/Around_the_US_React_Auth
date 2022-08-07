@@ -1,4 +1,22 @@
-function MobileUserHeader({ isLoggedIn, onPage, isActive }) {
+import { useHistory } from "react-router-dom";
+
+function MobileUserHeader({
+  isLoggedIn,
+  onPage,
+  isActive,
+  onLogOut,
+  loggedInUser,
+}) {
+  const history = useHistory();
+  const handleButtonClick = (evt) => {
+    if (evt.target.value === "Log in") {
+      history.push("/signin");
+    } else if (evt.target.value === "Sign up") {
+      history.push("/signup");
+    } else if (evt.target.value === "Log out") {
+      onLogOut();
+    }
+  };
   let buttonContent = "";
   if (isLoggedIn) {
     buttonContent = "Log out";
@@ -14,11 +32,14 @@ function MobileUserHeader({ isLoggedIn, onPage, isActive }) {
       }`}
     >
       {isLoggedIn && (
-        <p className="header__account header__account_mobile">
-          email@email.com
-        </p>
+        <p className="header__account header__account_mobile">{loggedInUser}</p>
       )}
-      <button type="button" className="header__button header__button_mobile">
+      <button
+        type="button"
+        className="header__button header__button_mobile"
+        onClick={handleButtonClick}
+        value={buttonContent}
+      >
         {buttonContent}
       </button>
     </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function Login({ onSubmit }) {
   const [loginEmail, setLoginEmail] = useState("");
@@ -39,7 +40,9 @@ function Login({ onSubmit }) {
           <button className="auth__button" type="submit">
             Log in
           </button>
-          <p className="auth__redirect">Not a member yet? Sign up here!</p>
+          <NavLink to="/signup" className="auth__redirect">
+            Not a member yet? Sign up here!
+          </NavLink>
         </form>
       </div>
     </main>

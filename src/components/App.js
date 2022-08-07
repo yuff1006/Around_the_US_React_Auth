@@ -20,6 +20,7 @@ import { login, signup, verifyJWT } from "../utils/auth";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState();
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
   const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -31,7 +32,7 @@ function App() {
   ] = useState(false);
   const [isPicturePopupOpen, setPicturePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState({});
   const [isButtonStateLoading, setButtonStateLoading] = useState(false);
@@ -39,8 +40,9 @@ function App() {
   useEffect(() => {
     const storedJWT = localStorage.getItem("jwt");
     if (storedJWT) {
-      verifyJWT(storedJWT).then((data) => {
-        console.log(data);
+      verifyJWT(storedJWT).then(({ data }) => {
+        setIsLoggedIn(true);
+        setLoggedInUser(data.email);
       });
     } else {
       return;
@@ -202,7 +204,7 @@ function App() {
         if (data.token) {
           localStorage.setItem("jwt", data.token);
           setIsLoggedIn(true);
-          return data;
+          setLoggedInUser(loginCredentials.email);
         } else {
           return;
         }
@@ -223,6 +225,12 @@ function App() {
         setIsRegistrationSuccess(false);
       });
   }
+
+  function handleLogOut() {
+    setIsLoggedIn(false);
+    localStorage.removeItem("jwt");
+  }
+
   return (
     <div className="App">
       <div className="page">
@@ -230,7 +238,11 @@ function App() {
           <ProtectedRoute path={"/main"} isLoggedIn={isLoggedIn}>
             <Route path="/main">
               <CurrentUserContext.Provider value={currentUser}>
-                <Header isLoggedIn={isLoggedIn} />
+                <Header
+                  isLoggedIn={isLoggedIn}
+                  onLogOut={handleLogOut}
+                  loggedInUser={loggedInUser}
+                />
                 <CardsContext.Provider value={cards}>
                   <Main
                     onEditProfileClick={handleEditProfileClick}
@@ -279,11 +291,19 @@ function App() {
           </ProtectedRoute>
           <Route path="/signin">
             {isLoggedIn && <Redirect to="/main" />}
-            <Header isLoggedIn={isLoggedIn} onPage="login" />
+            <Header
+              isLoggedIn={isLoggedIn}
+              onPage="login"
+              onLogOut={handleLogOut}
+            />
             <Login onSubmit={handleLoginSubmit} />
           </Route>
           <Route path="/signup">
-            <Header isLoggedIn={isLoggedIn} onPage="signup" />
+            <Header
+              isLoggedIn={isLoggedIn}
+              onPage="signup"
+              onLogOut={handleLogOut}
+            />
             <Register onSubmit={handleRegisterSubmit} />
             <InfoTooltip
               name="infotooltip"

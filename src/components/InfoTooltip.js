@@ -1,13 +1,16 @@
 import successImage from "../images/success.svg";
 import failImage from "../images/fail.svg";
+import { useHistory } from "react-router-dom";
 
 function InfoTooltip({ name, isOpen, success, onClose }) {
+  const history = useHistory();
   function handleOverLayClose(evt) {
     if (
       evt.target.classList.contains("popup") ||
       evt.target.classList.contains("popup__close")
     ) {
       onClose();
+      history.push("/signin");
     }
   }
   return (
