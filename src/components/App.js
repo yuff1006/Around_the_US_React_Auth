@@ -16,11 +16,12 @@ import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
+import { login, signup, verifyJWT } from "../utils/auth";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
-  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = useState(true);
+  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -30,11 +31,21 @@ function App() {
   ] = useState(false);
   const [isPicturePopupOpen, setPicturePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState();
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState({});
   const [isButtonStateLoading, setButtonStateLoading] = useState(false);
 
+  useEffect(() => {
+    const storedJWT = localStorage.getItem("jwt");
+    if (storedJWT) {
+      verifyJWT(storedJWT).then((data) => {
+        console.log(data);
+      });
+    } else {
+      return;
+    }
+  }, []);
   useEffect(() => {
     api
       .getUserInfo()
@@ -185,6 +196,33 @@ function App() {
         setButtonStateLoading(false);
       });
   }
+  function handleLoginSubmit(loginCredentials) {
+    login(loginCredentials)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("jwt", data.token);
+          setIsLoggedIn(true);
+          return data;
+        } else {
+          return;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleRegisterSubmit(signupCredentials) {
+    signup(signupCredentials)
+      .then(() => {
+        setIsInfoToolTipPopupOpen(true);
+        setIsRegistrationSuccess(true);
+      })
+      .catch(() => {
+        setIsInfoToolTipPopupOpen(true);
+        setIsRegistrationSuccess(false);
+      });
+  }
   return (
     <div className="App">
       <div className="page">
@@ -242,11 +280,11 @@ function App() {
           <Route path="/signin">
             {isLoggedIn && <Redirect to="/main" />}
             <Header isLoggedIn={isLoggedIn} onPage="login" />
-            <Login />
+            <Login onSubmit={handleLoginSubmit} />
           </Route>
           <Route path="/signup">
             <Header isLoggedIn={isLoggedIn} onPage="signup" />
-            <Register />
+            <Register onSubmit={handleRegisterSubmit} />
             <InfoTooltip
               name="infotooltip"
               isOpen={isInfoToolTipPopupOpen}

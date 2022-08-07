@@ -16,6 +16,8 @@
 @import url("./blocks/popup/popup.css");
 /* auth blocks */
 @import url("./blocks/auth/auth.css");
+/* hamburger menu blocks */
+@import url("./blocks/hamburger-menu/hamburger-menu.css");
 
 /* header elements */
 @import url("./blocks/header/__logo/header__logo.css");
@@ -71,3 +73,9 @@
 @import url("./blocks/popup/__title/_no-input/popup__title_no-input.css");
 /* card modifier */
 @import url("./blocks/card/__trash/_hidden/card__trash_hidden.css");
+/* hamburger-menu modifier */
+@import url("./blocks/hamburger-menu/_expand/hamburger-menu_expand.css");
+/* header modifier */
+@import url("./blocks/header/__credential-container/_mobile/header__credential-container_mobile.css");
+@import url("./blocks/header/__button/_mobile/header__button_mobile.css");
+@import url("./blocks/header/__account/_mobile/header__account_mobile.css");
