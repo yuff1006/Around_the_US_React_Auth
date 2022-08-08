@@ -3,22 +3,19 @@ import { useState, useContext, useRef, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, buttonState }) {
-  const [avatar, setAvatar] = useState("");
   const [isAvatarValid, setAvatarValid] = useState(true);
   const currentUser = useContext(CurrentUserContext);
-  const avatarRef = useRef(avatar);
+  const avatarRef = useRef("");
+  const [validationMessage, setValidationMessage] = useState("");
 
   useEffect(() => {
-    setAvatar(currentUser.avatar ?? "");
-  }, [currentUser]);
+    avatarRef.current.value = currentUser.avatar;
+    setAvatarValid(true);
+  }, [isOpen, currentUser]);
 
-  function handleAvatarChange(e) {
-    setAvatar(e.target.value);
-    if (e.target.checkValidity()) {
-      setAvatarValid(true);
-    } else {
-      setAvatarValid(false);
-    }
+  function checkAvatarInputValidity(event) {
+    setAvatarValid(event.target.validity);
+    setValidationMessage(avatarRef.current.validationMessage);
   }
   function handleSubmit(e) {
     e.preventDefault();
@@ -45,8 +42,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, buttonState }) {
         required
         type="url"
         name="avatar"
-        onChange={handleAvatarChange}
-        value={avatar}
+        onChange={checkAvatarInputValidity}
         ref={avatarRef}
       />
       <span
@@ -55,7 +51,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, buttonState }) {
         }`}
         id="popup-profile-pic-url-error"
       >
-        {avatarRef.current?.validationMessage}
+        {validationMessage}
       </span>
     </PopupWithForm>
   );

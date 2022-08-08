@@ -11,7 +11,7 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { CardsContext } from "../contexts/CardsContext";
 import { DeletedCardContext } from "../contexts/DeletedCardContext";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
@@ -19,6 +19,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { login, signup, verifyJWT } from "../utils/auth";
 
 function App() {
+  const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState();
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
@@ -217,6 +218,7 @@ function App() {
   function handleRegisterSubmit(signupCredentials) {
     signup(signupCredentials)
       .then(() => {
+        history.push("/signin");
         setIsInfoToolTipPopupOpen(true);
         setIsRegistrationSuccess(true);
       })

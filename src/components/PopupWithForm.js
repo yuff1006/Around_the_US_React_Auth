@@ -17,20 +17,15 @@ function PopupWithForm({
     setFormValid(formRef.current.checkValidity());
   }, [children]);
 
-  function handleOverLayClose(evt) {
-    if (
-      evt.target.classList.contains("popup") ||
-      evt.target.classList.contains("popup__close")
-    ) {
-      onClose();
-    }
-  }
   return (
     <div
       className={`popup popup_type_${name} ${isOpen ? "popup_open" : ""}`}
-      onClick={handleOverLayClose}
+      onClick={() => onClose()}
     >
-      <div className="popup__container">
+      <div
+        className="popup__container"
+        onClick={(event) => event.stopPropagation()}
+      >
         <h2
           className={`popup__title ${
             name === "delete-confirmation" ? "popup__title_no-input" : ""
@@ -54,7 +49,12 @@ function PopupWithForm({
             {buttonText}
           </button>
         </form>
-        <button aria-label="Close" type="button" className="popup__close" />
+        <button
+          aria-label="Close"
+          type="button"
+          className="popup__close"
+          onClick={() => onClose()}
+        />
       </div>
     </div>
   );

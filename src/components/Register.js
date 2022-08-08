@@ -29,13 +29,13 @@ function Register({ onSubmit }) {
             placeholder="Email"
             type="text"
             onChange={handleEmailChange}
-          ></input>
+          />
           <input
             className="auth__input"
             placeholder="Password"
             type="password"
             onChange={handlePasswordChange}
-          ></input>
+          />
           <button className="auth__button" type="submit">
             Sign up
           </button>

@@ -1,5 +1,5 @@
 import PopupWithForm from "./PopupWithForm";
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonState }) {
@@ -7,9 +7,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonState }) {
   const [description, setDescription] = useState("");
   const [isNameValid, setNameValid] = useState(true);
   const [isAboutValid, setAboutValid] = useState(true);
+  const [validationMessage, setValidationMessage] = useState("");
   const currentUser = useContext(CurrentUserContext);
-  const nameInputRef = useRef();
-  const aboutInputRef = useRef();
 
   useEffect(() => {
     setName(currentUser.name ?? "");
@@ -22,6 +21,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonState }) {
       setNameValid(true);
     } else {
       setNameValid(false);
+      setValidationMessage(e.target.validationMessage);
     }
   }
   function handleDescriptionChange(e) {
@@ -30,6 +30,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonState }) {
       setAboutValid(true);
     } else {
       setAboutValid(false);
+      setValidationMessage(e.target.validationMessage);
     }
   }
   function handleSubmit(e) {
@@ -60,13 +61,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonState }) {
         name="name"
         value={name}
         onChange={handleNameChange}
-        ref={nameInputRef}
       />
       <span
         className={`popup__error ${isNameValid ? "" : "popup__error_visible"}`}
         id="popup-name-error"
       >
-        {nameInputRef.current?.validationMessage}
+        {validationMessage}
       </span>
       <input
         type="text"
@@ -80,13 +80,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonState }) {
         name="about"
         value={description}
         onChange={handleDescriptionChange}
-        ref={aboutInputRef}
       />
       <span
         className={`popup__error ${isAboutValid ? "" : "popup__error_visible"}`}
         id="popup-title-error"
       >
-        {aboutInputRef.current?.validationMessage}
+        {validationMessage}
       </span>
     </PopupWithForm>
   );

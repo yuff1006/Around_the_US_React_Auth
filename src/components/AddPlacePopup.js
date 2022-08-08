@@ -6,14 +6,15 @@ function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, buttonState }) {
   const [pictureLink, setPictureLink] = useState("");
   const [isNameValid, setNameValid] = useState(true);
   const [isLinkValid, setLinkValid] = useState(true);
-  const nameInputRef = useRef();
-  const linkInputRef = useRef();
+  const [validationMessage, setValidationMessage] = useState("");
+
   function handlePictureNameChange(e) {
     setPictureName(e.target.value);
     if (e.target.checkValidity()) {
       setNameValid(true);
     } else {
       setNameValid(false);
+      setValidationMessage(e.target.validationMessage);
     }
   }
   function handlePictureLinkChange(e) {
@@ -22,6 +23,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, buttonState }) {
       setLinkValid(true);
     } else {
       setLinkValid(false);
+      setValidationMessage(e.target.validationMessage);
     }
   }
   function handleSubmit(e) {
@@ -49,13 +51,12 @@ function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, buttonState }) {
         name="name"
         value={pictureName}
         onChange={handlePictureNameChange}
-        ref={nameInputRef}
       />
       <span
         className={`popup__error ${!isNameValid && "popup__error_visible"}`}
         id="popup-place-error"
       >
-        {nameInputRef.current?.validationMessage}
+        {validationMessage}
       </span>
       <input
         className={`popup__info ${!isLinkValid && "popup__info_type_error"}`}
@@ -66,13 +67,12 @@ function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, buttonState }) {
         name="link"
         value={pictureLink}
         onChange={handlePictureLinkChange}
-        ref={linkInputRef}
       />
       <span
         className={`popup__error ${!isLinkValid && "popup__error_visible"}`}
         id="popup-url-error"
       >
-        {linkInputRef.current?.validationMessage}
+        {validationMessage}
       </span>
     </PopupWithForm>
   );

@@ -29,14 +29,14 @@ function Login({ onSubmit }) {
             type="text"
             name="email"
             onChange={handleEmailChange}
-          ></input>
+          />
           <input
             className="auth__input"
             placeholder="Password"
             type="password"
             name="password"
             onChange={handlePasswordChange}
-          ></input>
+          />
           <button className="auth__button" type="submit">
             Log in
           </button>
