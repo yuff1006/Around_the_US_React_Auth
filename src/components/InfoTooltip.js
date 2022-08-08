@@ -5,7 +5,7 @@ function InfoTooltip({ name, isOpen, success, onClose }) {
   return (
     <div
       className={`popup popup_type_${name} ${isOpen ? "popup_open" : ""}`}
-      onClick={() => onClose()}
+      onClick={onClose}
     >
       <div
         className="popup__container"
@@ -25,7 +25,7 @@ function InfoTooltip({ name, isOpen, success, onClose }) {
           aria-label="Close"
           type="button"
           className="popup__close"
-          onClick={() => onClose()}
+          onClick={onClose}
         />
       </div>
     </div>

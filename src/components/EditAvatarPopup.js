@@ -14,7 +14,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, buttonState }) {
   }, [isOpen, currentUser]);
 
   function checkAvatarInputValidity(event) {
-    setAvatarValid(event.target.validity);
+    setAvatarValid(event.target.validity.valid);
     setValidationMessage(avatarRef.current.validationMessage);
   }
   function handleSubmit(e) {

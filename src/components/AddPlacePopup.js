@@ -1,5 +1,5 @@
 import PopupWithForm from "./PopupWithForm";
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, buttonState }) {
   const [pictureName, setPictureName] = useState("");
@@ -7,7 +7,12 @@ function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, buttonState }) {
   const [isNameValid, setNameValid] = useState(true);
   const [isLinkValid, setLinkValid] = useState(true);
   const [validationMessage, setValidationMessage] = useState("");
-
+  useEffect(() => {
+    setPictureName("");
+    setPictureLink("");
+    setNameValid(true);
+    setLinkValid(true);
+  }, [isOpen]);
   function handlePictureNameChange(e) {
     setPictureName(e.target.value);
     if (e.target.checkValidity()) {

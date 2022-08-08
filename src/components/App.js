@@ -210,8 +210,9 @@ function App() {
           return;
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        setIsRegistrationSuccess(false);
+        setIsInfoToolTipPopupOpen(true);
       });
   }
 
@@ -236,6 +237,12 @@ function App() {
   return (
     <div className="App">
       <div className="page">
+        <InfoTooltip
+          name="infotooltip"
+          isOpen={isInfoToolTipPopupOpen}
+          success={isRegistrationSuccess}
+          onClose={closeAllPopups}
+        />
         <Switch>
           <ProtectedRoute path={"/main"} isLoggedIn={isLoggedIn}>
             <Route path="/main">
@@ -307,12 +314,6 @@ function App() {
               onLogOut={handleLogOut}
             />
             <Register onSubmit={handleRegisterSubmit} />
-            <InfoTooltip
-              name="infotooltip"
-              isOpen={isInfoToolTipPopupOpen}
-              success={isRegistrationSuccess}
-              onClose={closeAllPopups}
-            />
           </Route>
           <Route path="/">
             {isLoggedIn ? <Redirect to="/main" /> : <Redirect to="/signin" />}
